@@ -1,0 +1,32 @@
+---
+kind: Namespace
+apiVersion: v1 
+metadata: 
+  name: myns
+
+--- 
+kind: ResourceQuota 
+apiVersion: v1
+metadata: 
+  name: rq 
+spec: 
+  hard: 
+    limits.cpu: 10000m
+    limits.memory: 10000Mi 
+    requests.cpu: 5000m
+    requests.memory: 5000Mi 
+
+--- 
+kind: LimitRange
+apiVersion: v1 
+metadata: 
+  name: lr 
+spec: 
+  limits: 
+    - max: 
+        memory: 9Gi
+      min: 
+        memory: 500Mi
+      type: Container 
+    
+

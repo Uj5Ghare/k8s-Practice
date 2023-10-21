@@ -1,0 +1,38 @@
+kind: Deployment 
+apiVersion: apps/v1 
+metadata: 
+  name: mydeploy 
+  labels: 
+    name: deploy 
+spec: 
+  replicas: 1 
+  selector: 
+    matchLabels: 
+      class: deploy 
+  template: 
+    metadata: 
+      name: dppod
+      labels: 
+        class: deploy 
+    spec:   
+      containers: 
+        - name: dpcon 
+          image: centos 
+          args:  
+          - /bin/bash
+          - -c 
+          - echo deployment; sleep 2939
+          env: 
+            - name: Myname
+              value: ujwal
+          volumeMounts: 
+            - name: vol 
+              mountPath: /volume 
+      volumes: 
+        - name: vol 
+          hostPath: 
+            path: /data3 
+      restartPolicy: Always
+      nodeSelector: 
+        name: mynode
+        

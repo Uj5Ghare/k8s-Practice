@@ -1,0 +1,22 @@
+kind: ReplicaSet
+apiVersion: apps/v1 
+metadata: 
+  name: rs 
+  labels: 
+    name: rs 
+spec: 
+  replicas: 1 
+  selector:
+    matchExpressions: 
+      - {key: class, operator: In, values: [rs,ujwal,pao]}
+  template: 
+    metadata:   
+      name: rspod 
+      labels: 
+        class: rs 
+    spec: 
+      containers: 
+        - name: rscon 
+          image: ubuntu 
+          command: ["/bin/bash","-c","echo rs; sleep 3948"]
+        

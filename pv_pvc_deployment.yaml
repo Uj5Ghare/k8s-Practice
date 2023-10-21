@@ -1,0 +1,56 @@
+---
+kind: Deployment
+apiVersion: apps/v1 
+metadata: 
+  name: pvdeploy 
+spec: 
+  replicas: 1 
+  selector: 
+    matchLabels: 
+      class: dp 
+  template: 
+    metadata: 
+      name: pvdppod 
+      labels: 
+        class: dp 
+    spec: 
+      containers: 
+        - name: pvdpcon 
+          image: ubuntu 
+          command: ["/bin/bash","-c","echo pvpvcdeploy; sleep 2938"]
+          volumeMounts: 
+            - name: pvvol 
+              mountPath: /volume 
+      volumes: 
+        - name: pvvol 
+          persistentVolumeClaim: 
+            claimName: pvc 
+        
+--- 
+kind: PersistentVolume 
+apiVersion: v1 
+metadata: 
+  name: pv 
+spec: 
+  capacity: 
+    storage: 10Gi 
+  accessModes: 
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Recycle 
+  awsElasticBlockStore: 
+    volumeID: i980ioj9j
+    fsType: ext4
+
+--- 
+kind: PersistentVolumeClaim
+apiVersion: v1 
+metadata: 
+  name: pvc
+spec: 
+  accessModes: 
+    - ReadWriteOnce
+  resources: 
+    requests: 
+      storage: 1Gi 
+
+

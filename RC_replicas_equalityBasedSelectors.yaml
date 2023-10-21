@@ -1,0 +1,21 @@
+kind: ReplicationController 
+apiVersion: v1 
+metadata: 
+  name: rc 
+  labels: 
+    name: rc 
+spec: 
+  replicas: 1 
+  selector: 
+    class: rs
+  template: 
+    metadata: 
+      name: rcpod 
+      labels: 
+        class: rs
+    spec: 
+      containers: 
+        - name: rccon 
+          image: ubuntu 
+          command: ["/bin/bash","-c","echo rc; sleep 3923"]
+        

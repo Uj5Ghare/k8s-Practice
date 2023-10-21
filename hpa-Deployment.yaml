@@ -1,0 +1,49 @@
+kind: Deployment 
+apiVersion: apps/v1 
+metadata: 
+  name: hpadeploy 
+spec: 
+  replicas: 1 
+  selector: 
+    matchLabels:  
+      class: hpa 
+  template: 
+    metadata: 
+      name: hpapod 
+      labels:   
+        class: hpa
+    spec: 
+      containers:   
+        - name: hpacon 
+          image: ubuntu 
+          command: ["/bin/bash","-c","echo hpa; sleep 3948"]
+          env: 
+            - name: key 
+              value: value 
+          volumeMounts: 
+            - name: hpavol 
+              mountPath: /hpa
+          livenessProbe:  
+            exec:   
+              command: 
+                - cat /tmp
+            initialDelaySeconds: 5 
+            periodSeconds: 6 
+            timeoutSeconds: 20
+          resources:  
+            limits:   
+              memory: 1Gi 
+              cpu: 1000m
+            requests:   
+              memory: 500Mi 
+              cpu: 400m
+      volumes:
+        - name: hpavol 
+          hostPath: 
+            path: /data2
+      restartPolicy: Always
+      nodeSelector: 
+        name: mynode
+
+          
+

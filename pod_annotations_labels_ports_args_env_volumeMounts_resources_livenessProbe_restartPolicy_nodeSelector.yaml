@@ -1,0 +1,72 @@
+kind: Pod
+apiVersion: v1 
+metadata: 
+  name: pod 
+  annotations: 
+    description: this is description 
+  labels: 
+    name: pod 
+    env: test
+    class: Pod 
+spec:
+    containers:
+      - name: con 
+        image: ubuntu 
+        args:
+          - /bin/bash
+          - -c 
+          - mkdir /healthcheck; sleep 48093
+        ports: 
+          - containerPort: 80
+        env: 
+          - name: Myname
+            value: Ujwal
+          - name: PodName
+            value: POD
+        volumeMounts: 
+          - name: vol 
+            mountPath: /volume
+          - name: vol2
+            mountPath: /volume2
+        resources: 
+          limits:   
+            cpu: 1000m
+            memory: 1000Mi
+          requests: 
+            cpu: 500m
+            memory: 500Mi 
+        livenessProbe: 
+          exec: 
+            command: 
+              - cat 
+              - /healthcheck
+          initialDelaySeconds: 7
+          periodSeconds: 5
+          timeoutSeconds: 30
+      - name: con2 
+        image: ubuntu 
+        args: 
+          - /bin/bash 
+          - -c 
+          - echo ujwal; sleep 2397
+        resources:  
+          limits:   
+            cpu: 1000m 
+            memory: 1000Mi 
+          requests: 
+            cpu: 500m 
+            memory: 500Mi 
+        volumeMounts: 
+          - name: vol 
+            mountPath: /volume
+    volumes: 
+      - name: vol 
+        emptyDir: {}
+      - name: vol2 
+        hostPath: 
+          path: /data 
+    restartPolicy: Always 
+    nodeSelector:
+      name: mynode
+
+    
